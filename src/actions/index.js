@@ -1,4 +1,4 @@
-export const addProd = (id, prodData) => ({
+export const addProduct = (id, prodData) => ({
   type: 'ADD_PROD',
   id,
   prodData
