@@ -6,7 +6,7 @@ const defaultProducts = [
       descr: 'good phone',
       price: 1000,
       discount: 200,
-      discountEnds: 10
+      discountEnds: '2020-09-07'
     }
   },
   {
@@ -16,7 +16,7 @@ const defaultProducts = [
       descr: 'good phone',
       price: 2500,
       discount: 200,
-      discountEnds: 10
+      discountEnds: '2020-10-18'
     }
   }
 ]
@@ -31,6 +31,17 @@ const products = (state = defaultProducts, action) => {
           prodData: action.prodData
         }
       ]
+    case 'EDIT_PROD':
+      return state.map((item, index) => {
+        if(index === action.index)
+          return Object.assign({}, {
+            id: item.id,
+            prodData: action.prodData
+          })
+          return item
+      })
+    case 'DELETE_PROD':
+      return state.filter((item, index) => item.id !== action.id)
     default:
       return state
   }
