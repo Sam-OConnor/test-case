@@ -5,7 +5,7 @@ const defaultProducts = [
       name: 'iPhone 11',
       descr: 'good phone',
       price: 1000,
-      discount: 200,
+      discount: 20,
       discountEnds: '2020-09-07'
     }
   },
@@ -15,7 +15,7 @@ const defaultProducts = [
       name: 'Macbook pro 16',
       descr: 'good phone',
       price: 2500,
-      discount: 200,
+      discount: 45,
       discountEnds: '2020-10-18'
     }
   }
