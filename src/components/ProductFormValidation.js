@@ -1,6 +1,4 @@
 const ProductFormValidation = formData => {
-  console.log(formData)
-
   const validation = {
     isValid: false,
     invalidInputNames: []
@@ -54,7 +52,6 @@ const ProductFormValidation = formData => {
   if (validation.invalidInputNames.length === 0)
     validation.isValid = true
 
-  console.log(validation);
   return validation
 }
 

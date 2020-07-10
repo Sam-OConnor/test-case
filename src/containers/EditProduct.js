@@ -3,11 +3,11 @@ import { editProduct } from '../actions'
 import EditProduct from '../components/EditProduct'
 
 const mapStateToProps = (state, ownProps) => {
-  const productIndex = state.products.findIndex(x => x.id === +ownProps.match.params.id);
+  const productIndex = state.products.findIndex(product => product.id === +ownProps.match.params.id);
 
   return {
     productIndex: productIndex,
-    product: state.products[productIndex].prodData
+    product: state.products[productIndex] ? state.products[productIndex].prodData : ''
   }
 }
 

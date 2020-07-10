@@ -1,28 +1,9 @@
-const defaultProducts = [
-  {
-    id: 0,
-    prodData: {
-      name: 'iPhone 11',
-      descr: 'good phone',
-      price: 1000,
-      discount: 20,
-      discountEnds: '2020-09-07'
-    }
-  },
-  {
-    id: 1,
-    prodData: {
-      name: 'Macbook pro 16',
-      descr: 'good phone',
-      price: 2500,
-      discount: 45,
-      discountEnds: '2020-10-18'
-    }
-  }
-]
-
-const products = (state = defaultProducts, action) => {
+const products = (state = [], action) => {
   switch (action.type) {
+    case 'RECEIVE_PRODUCTS':
+      return [
+        ...action.prodData
+      ]
     case 'ADD_PROD':
       return [
         ...state,
@@ -30,7 +11,7 @@ const products = (state = defaultProducts, action) => {
           id: action.id,
           prodData: action.prodData
         }
-      ]
+      ].reverse()
     case 'EDIT_PROD':
       return state.map((item, index) => {
         if(index === action.index)
