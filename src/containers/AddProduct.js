@@ -12,7 +12,8 @@ const mapStateToProps = state => {
     id = 1
 
   return ({
-    id: id
+    id: id,
+    isLoading: state.products.isLoading
   })
 }
 

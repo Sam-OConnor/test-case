@@ -14,11 +14,11 @@ const products = (state = {
       return Object.assign({}, state, {
         isLoading: false,
         items: [
-          ...state.items,
           {
             id: action.id,
             prodData: action.prodData
-          }
+          },
+          ...state.items
         ].reverse()
       })
     case 'EDIT_PROD':
@@ -38,6 +38,11 @@ const products = (state = {
       return Object.assign({}, {
         isLoading: false,
         items: state.items.filter(item => item.id !== action.id)
+      })
+    case 'CHANGE_LOADING_STATUS':
+      return Object.assign({}, {
+        isLoading: action.isLoading,
+        items: state.items
       })
     default:
       return state

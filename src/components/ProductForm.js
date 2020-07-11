@@ -62,7 +62,7 @@ const ProductForm = props => {
     setRedirect(true)
   }
 
-  if (redirect)
+  if (redirect && props.isLoading === false)
     return <Redirect to="/"/>
 
   return (
@@ -181,8 +181,9 @@ const ProductForm = props => {
         </div>
       }
 
-      <button type="submit">
+      <button type="submit" className={props.isLoading ? 'preloader' : ''}>
         Save
+        <div className="preloader"></div>
       </button>
     </form>
   )

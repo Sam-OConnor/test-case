@@ -27,6 +27,11 @@ export const removeProduct = id => ({
   id,
 })
 
+export const changeLoadingStatus = isLoading => ({
+  type: 'CHANGE_LOADING_STATUS',
+  isLoading
+})
+
 
 //------------------------------------------------------------------------------
 // Login
@@ -117,6 +122,8 @@ const isImageChanged = imageString => {
 
 // send product image to firebase store
 export const sendProduct = (id, prodData, productIndex) => dispatch => {
+  dispatch(changeLoadingStatus(true))
+  
   if (isImageChanged(prodData.image)) {
     const storageRef = storage.ref()
     const imagesRef = storageRef.child(id.toString())
