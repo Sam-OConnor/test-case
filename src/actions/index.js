@@ -34,8 +34,10 @@ export const removeProduct = id => ({
 export const findUser = (login, password) => dispatch => {
   db.collection("users").where("login", "==", login).get().then(querySnapshot => {
     querySnapshot.forEach(doc => {
-        if (doc.data().password === password)
+        if (doc.data().password === password) {
+          localStorage.setItem('isLoggedIn', true)
           dispatch(changeLoginStatus(true))
+        }
     });
   })
 }

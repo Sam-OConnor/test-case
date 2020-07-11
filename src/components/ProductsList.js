@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 const getDaysToDiscountExpire = date => {
@@ -10,7 +10,10 @@ const getDaysToDiscountExpire = date => {
   return diffInDays
 }
 
-const ProductsList = ({products, deleteProduct}) => {
+const ProductsList = ({products, deleteProduct, getProductsIfNeeded}) => {
+  useEffect(() => {
+    getProductsIfNeeded()
+  })
 
   return (
     <div className="product-list-wrapper">
@@ -26,13 +29,18 @@ const ProductsList = ({products, deleteProduct}) => {
             </div>
             <span className="product-name">{product.prodData.name}</span>
             <span className="product-descr">{product.prodData.descr}</span>
-            <span className="product-price">
-              ${(product.prodData.price - (product.prodData.price / 100) * product.prodData.discount).toFixed(2)}
-            </span>
-            <span className="product-discount">{product.prodData.discount}%</span>
-            <span className="product-discount-ends">
-              days to discount expiry: {getDaysToDiscountExpire(product.prodData.discountEnds)}
-            </span>
+            <span className="product-price">${product.prodData.price}</span>
+            {product.prodData.discount > 0 &&
+              <div>
+                <span className="product-price">
+                  ${(product.prodData.price - (product.prodData.price / 100) * product.prodData.discount).toFixed(2)}
+                </span>
+                <span className="product-discount">{product.prodData.discount}%</span>
+                <span className="product-discount-ends">
+                  days to discount expiry: {getDaysToDiscountExpire(product.prodData.discountEnds)}
+                </span>
+              </div>
+            }
             <Link to={"/edit/" + product.id} className="product-control">&#9998;</Link>
             <a href="/"
                className="product-control"

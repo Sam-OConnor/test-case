@@ -1,5 +1,5 @@
 const defaultAuth = {
-  isLoggedIn: false
+  isLoggedIn: JSON.parse(localStorage.getItem('isLoggedIn'))
 }
 
 const auth = (state = defaultAuth, action) => {
