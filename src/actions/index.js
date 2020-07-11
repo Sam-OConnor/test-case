@@ -1,5 +1,10 @@
 import { db, storage } from '../firebase'
 
+export const changeLoginStatus = isLoggedIn => ({
+  type: 'CHANGE_LOGIN_STATUS',
+  isLoggedIn: isLoggedIn
+})
+
 export const receiveProducts = prodData => ({
   type: 'RECEIVE_PRODUCTS',
   prodData
@@ -22,6 +27,18 @@ export const removeProduct = id => ({
   id,
 })
 
+
+//------------------------------------------------------------------------------
+// Login
+
+export const findUser = (login, password) => dispatch => {
+  db.collection("users").where("login", "==", login).get().then(querySnapshot => {
+    querySnapshot.forEach(doc => {
+        if (doc.data().password === password)
+          dispatch(changeLoginStatus(true))
+    });
+  })
+}
 
 //------------------------------------------------------------------------------
 // Get products

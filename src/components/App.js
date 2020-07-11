@@ -3,17 +3,18 @@ import { connect } from 'react-redux'
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  Redirect
 } from "react-router-dom";
 import { getProductsIfNeeded } from '../actions'
-import Login from '../components/Login'
+import Login from '../containers/Login'
 import ProductsList from '../containers/ProductsList'
 import AddProduct from '../containers/AddProduct'
 import EditProduct from '../containers/EditProduct'
 import './app.scss'
 
 const App = ({isLoggedIn, getProductsIfNeeded}) => {
-  let homeComponent = isLoggedIn ? <ProductsList /> : <Login />
+  // let homeComponent = isLoggedIn ? <ProductsList /> : <Login />
 
   useEffect(() => {
     getProductsIfNeeded()
@@ -24,7 +25,7 @@ const App = ({isLoggedIn, getProductsIfNeeded}) => {
       <Router>
         <Switch>
           <Route exact path="/">
-            {homeComponent}
+            <ProductsList />
           </Route>
 
           <Route exact path="/add">
@@ -32,7 +33,16 @@ const App = ({isLoggedIn, getProductsIfNeeded}) => {
           </Route>
 
           <Route exact path="/edit/:id" component={EditProduct} />
+
+          <Route exact path="/login">
+            <Login />
+          </Route>
         </Switch>
+
+        {!isLoggedIn &&
+          <Redirect to="/login"/>
+        }
+
       </Router>
     </div>
   )
