@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import ProductForm from './ProductForm'
 
-const EditProduct = ({productIndex, product, saveProduct}) => {
+const EditProduct = ({id, productIndex, product, sendProduct}) => {
   const [isProductLoaded, setIsProductLoaded] = useState(false)
 
   useEffect(() => {
@@ -13,7 +13,7 @@ const EditProduct = ({productIndex, product, saveProduct}) => {
   return (
     <div>
       {isProductLoaded &&
-        <ProductForm productIndex={productIndex} product={product} saveProduct={saveProduct} />
+        <ProductForm id={id} productIndex={productIndex} product={product} sendProduct={sendProduct} />
       }
     </div>
   )

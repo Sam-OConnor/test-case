@@ -1,8 +1,8 @@
 import React from 'react'
 import ProductForm from './ProductForm'
 
-const AddProduct = ({productIndex, sendProduct}) => (
-  <ProductForm productIndex={productIndex} sendProduct={sendProduct} />
+const AddProduct = ({id, sendProduct}) => (
+  <ProductForm id={id} sendProduct={sendProduct} />
 )
 
 export default AddProduct

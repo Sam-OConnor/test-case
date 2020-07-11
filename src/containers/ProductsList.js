@@ -3,7 +3,7 @@ import { deleteProduct } from '../actions'
 import ProductsList from '../components/ProductsList'
 
 const mapStateToProps = state => ({
-  products: state.products
+  products: state.products.items
 })
 
 const mapDispatchToProps = dispatch => ({

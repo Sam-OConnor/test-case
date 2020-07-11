@@ -33,9 +33,9 @@ const ProductsList = ({products, deleteProduct}) => {
             <span className="product-discount-ends">
               days to discount expiry: {getDaysToDiscountExpire(product.prodData.discountEnds)}
             </span>
-            <Link to={"/edit/" + product.id} className="product-controll">&#9998;</Link>
+            <Link to={"/edit/" + product.id} className="product-control">&#9998;</Link>
             <a href="/"
-               className="product-controll"
+               className="product-control"
                onClick={e => {
                  e.preventDefault()
                  deleteProduct(product.id)

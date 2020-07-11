@@ -3,7 +3,7 @@ import { sendProduct } from '../actions'
 import AddProduct from '../components/AddProduct'
 
 const mapStateToProps = state => {
-  const products = state.products.reverse()
+  const products = state.products.items.reverse()
   let id
 
   if(products.length > 0)
@@ -12,7 +12,7 @@ const mapStateToProps = state => {
     id = 1
 
   return ({
-    productIndex: id
+    id: id
   })
 }
 

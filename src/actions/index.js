@@ -17,27 +17,18 @@ export const editProduct = (index, prodData) => ({
   prodData
 })
 
-export const deleteProduct = id => ({
+export const removeProduct = id => ({
   type: 'DELETE_PROD',
   id,
 })
 
 
+//------------------------------------------------------------------------------
 // Get products
-const getProduct = () => dispatch => {
-  const prodData = []
 
-  db.collection("products").orderBy("id", "desc").get().then(querySnapshot => {
-    querySnapshot.forEach(doc => {
-      prodData.push(doc.data())
-    })
-
-    dispatch(receiveProducts(prodData))
-  })
-}
-
+// if app should get products from firebase
 const shouldGetProducts = (state) => {
-  const products = state.products
+  const products = state.products.items
 
   if (!products || products.length === 0)
     return true
@@ -45,50 +36,109 @@ const shouldGetProducts = (state) => {
     return false
 }
 
+// get products from firebase and push it to state if needed
 export const getProductsIfNeeded = () => (dispatch, getState) => {
-  if ( shouldGetProducts(getState()) )
-    dispatch(getProduct())
+  if ( shouldGetProducts(getState()) ) {
+    const prodData = []
+
+    db.collection("products").orderBy("id", "desc").get().then(querySnapshot => {
+      querySnapshot.forEach(doc => {
+        prodData.push(doc.data())
+      })
+
+      dispatch(receiveProducts(prodData))
+    })
+  }
 }
 
-const storeProductData = (id, url, prodData) => dispatch => {
+
+//------------------------------------------------------------------------------
+// Store product
+
+// add image url to product send product to firebase and state
+const storeProductData = (id, url, prodData, productIndex) => (dispatch, getState) => {
+  console.log(productIndex);
   prodData.image = url
-  console.log(prodData)
   delete prodData.imageInfo
   delete prodData.isDiscount
 
-  db.collection("products").add({
+  db.collection("products").doc(id.toString()).set({
     id: id,
     prodData: prodData
   })
-  .then(function(docRef) {
-      console.log("Document written with ID: ", docRef.id);
-      dispatch(addProduct(id, prodData))
+  .then(() => {
+      console.log("Document written with ID: " + id);
+      if (Number.isInteger(productIndex))
+        dispatch(editProduct(productIndex, prodData))
+      else
+        dispatch(addProduct(id, prodData))
   })
-  .catch(function(error) {
+  .catch(error => {
       console.error("Error adding document: ", error);
   });
 }
 
-const getImageUrl = (storageRef, id, prodData) => dispatch => {
-  storageRef.child(id.toString()).getDownloadURL().then(function(url) {
+// get uploaded image url from firebase store
+const getImageUrl = (storageRef, id, prodData, productIndex) => dispatch => {
+  storageRef.child(id.toString()).getDownloadURL().then(url => {
     console.log(url)
-    dispatch(storeProductData(id, url, prodData))
-  }).catch(function(error) {
-    // Handle any errors
+    dispatch(storeProductData(id, url, prodData, productIndex))
+  }).catch(error => {
+
   })
 }
 
-export const sendProduct = (id, prodData) => dispatch => {
-  const storageRef = storage.ref()
-  const imagesRef = storageRef.child(id.toString())
+// if image string is base64 then image is changed
+const isImageChanged = imageString => {
+  if (imageString.indexOf('base64') !== -1)
+    return true
+  else
+    return false
+}
 
-  imagesRef.putString(
-    prodData.image.split(',')[1], 'base64', {
-      contentType: 'image/jpg'
-    }
-  ).then(snapshot => {
-    console.log(snapshot);
-    console.log('Uploaded a base64 string!');
-    dispatch(getImageUrl(storageRef, id, prodData))
-  })
+// send product image to firebase store
+export const sendProduct = (id, prodData, productIndex) => dispatch => {
+  if (isImageChanged(prodData.image)) {
+    const storageRef = storage.ref()
+    const imagesRef = storageRef.child(id.toString())
+
+    imagesRef.putString(
+      prodData.image.split(',')[1], 'base64', {
+        contentType: 'image/jpg'
+      }
+    ).then(snapshot => {
+      console.log(snapshot);
+      console.log('Uploaded a base64 string!');
+      dispatch(getImageUrl(storageRef, id, prodData, productIndex))
+    })
+  } else
+      dispatch(storeProductData(id, prodData.image, prodData, productIndex))
+}
+
+
+//------------------------------------------------------------------------------
+
+// Delete image
+const deleteImage = id => dispatch => {
+  const storageRef = storage.ref()
+  // Create a reference to the file to delete
+  const imagesRef = storageRef.child(id.toString());
+
+  // Delete the file
+  imagesRef.delete().then(() => {
+      console.log('File deleted successfully')
+      dispatch(removeProduct(id))
+  }).catch(error => {
+    // Uh-oh, an error occurred!
+  });
+}
+
+// Delete product
+export const deleteProduct = id => dispatch => {
+  db.collection("products").doc(id.toString()).delete().then(() => {
+    console.log("Document successfully deleted!");
+    dispatch(deleteImage(id))
+  }).catch(error => {
+      console.error("Error removing document: ", error);
+  });
 }

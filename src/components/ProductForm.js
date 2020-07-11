@@ -58,7 +58,7 @@ const ProductForm = props => {
   }
 
   const addProduct = prodData => {
-    props.sendProduct(props.productIndex, prodData)
+    props.sendProduct(props.id, prodData, props.productIndex)
     setRedirect(true)
   }
 

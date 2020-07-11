@@ -1,18 +1,19 @@
 import { connect } from 'react-redux'
-import { editProduct } from '../actions'
+import { sendProduct } from '../actions'
 import EditProduct from '../components/EditProduct'
 
 const mapStateToProps = (state, ownProps) => {
-  const productIndex = state.products.findIndex(product => product.id === +ownProps.match.params.id);
+  const productIndex = state.products.items.findIndex(product => product.id === +ownProps.match.params.id);
 
   return {
+    id: +ownProps.match.params.id,
     productIndex: productIndex,
-    product: state.products[productIndex] ? state.products[productIndex].prodData : ''
+    product: state.products.items[productIndex] ? state.products.items[productIndex].prodData : ''
   }
 }
 
 const mapDispatchToProps = dispatch => ({
-  saveProduct: (id, prodData) => dispatch(editProduct(id, prodData))
+  sendProduct: (id, prodData, productIndex) => dispatch(sendProduct(id, prodData, productIndex))
 })
 
 export default connect(
