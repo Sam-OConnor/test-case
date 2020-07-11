@@ -9,7 +9,8 @@ const mapStateToProps = (state, ownProps) => {
     id: +ownProps.match.params.id,
     productIndex: productIndex,
     product: state.products.items[productIndex] ? state.products.items[productIndex].prodData : '',
-    isLoading: state.products.isLoading
+    isLoading: state.products.isLoading,
+    isLoggedIn: state.auth.isLoggedIn
   }
 }
 
