@@ -86,7 +86,6 @@ export const getProductsIfNeeded = () => (dispatch, getState) => {
 
 // add image url to product send product to firebase and state
 const storeProductData = (id, url, prodData, productIndex) => (dispatch, getState) => {
-  console.log(productIndex);
   prodData.image = url
   delete prodData.imageInfo
   delete prodData.isDiscount
@@ -96,18 +95,16 @@ const storeProductData = (id, url, prodData, productIndex) => (dispatch, getStat
     prodData: prodData
   })
   .then(() => {
-      console.log("Document written with ID: " + id);
-      if (Number.isInteger(productIndex))
-        dispatch(editProduct(productIndex, prodData))
-      else
-        dispatch(addProduct(id, prodData))
+    if (Number.isInteger(productIndex))
+      dispatch(editProduct(productIndex, prodData))
+    else
+      dispatch(addProduct(id, prodData))
   })
 }
 
 // get uploaded image url from firebase store
 const getImageUrl = (storageRef, id, prodData, productIndex) => dispatch => {
   storageRef.child(id.toString()).getDownloadURL().then(url => {
-    console.log(url)
     dispatch(storeProductData(id, url, prodData, productIndex))
   })
 }
@@ -133,8 +130,6 @@ export const sendProduct = (id, prodData, productIndex) => dispatch => {
         contentType: 'image/jpg'
       }
     ).then(snapshot => {
-      console.log(snapshot);
-      console.log('Uploaded a base64 string!');
       dispatch(getImageUrl(storageRef, id, prodData, productIndex))
     })
   } else
@@ -152,7 +147,6 @@ const deleteImage = id => dispatch => {
 
   // Delete the file
   imagesRef.delete().then(() => {
-      console.log('File deleted successfully')
       dispatch(removeProduct(id))
   })
 }
@@ -160,7 +154,6 @@ const deleteImage = id => dispatch => {
 // Delete product
 export const deleteProduct = id => dispatch => {
   db.collection("products").doc(id.toString()).delete().then(() => {
-    console.log("Document successfully deleted!");
     dispatch(deleteImage(id))
   })
 }
