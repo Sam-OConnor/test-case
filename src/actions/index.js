@@ -47,6 +47,11 @@ export const findUser = (login, password) => dispatch => {
   })
 }
 
+export const logout = () => dispatch => {
+  localStorage.setItem('isLoggedIn', false)
+  dispatch(changeLoginStatus(false))
+}
+
 //------------------------------------------------------------------------------
 // Get products
 
@@ -123,7 +128,7 @@ const isImageChanged = imageString => {
 // send product image to firebase store
 export const sendProduct = (id, prodData, productIndex) => dispatch => {
   dispatch(changeLoadingStatus(true))
-  
+
   if (isImageChanged(prodData.image)) {
     const storageRef = storage.ref()
     const imagesRef = storageRef.child(id.toString())

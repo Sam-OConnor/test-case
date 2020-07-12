@@ -6,7 +6,7 @@ const auth = (state = defaultAuth, action) => {
   switch (action.type) {
     case 'CHANGE_LOGIN_STATUS':
       return {
-        isLoggedIn: true
+        isLoggedIn: action.isLoggedIn
       }
     default:
       return state
