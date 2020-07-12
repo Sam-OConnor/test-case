@@ -52,8 +52,8 @@ const ProductForm = props => {
       elem.classList.remove('error')
     }
 
-    for (const value of names) {
-      document.getElementsByName(value)[0].classList.add('error')
+    for (const name of names) {
+      document.getElementsByName(name)[0].classList.add('error')
     }
   }
 
@@ -66,7 +66,7 @@ const ProductForm = props => {
     return <Redirect to="/"/>
 
   return (
-    <form className="product-form" onSubmit={e => {
+    <form className="form" onSubmit={e => {
       e.preventDefault()
 
       const prodData = {
@@ -84,6 +84,9 @@ const ProductForm = props => {
 
       validation.invalidInputNames.length > 0 ? highlightWrongInputs(validation.invalidInputNames) : addProduct(prodData)
     }}>
+      <div className="image-preview">
+        <img src={image || '/preview-placeholder.jpg'} alt='preview'/>
+      </div>
       <label>
         *Image size must be less than 4mb and dimensions between 200px and 4000px
         <input

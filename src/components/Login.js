@@ -9,20 +9,28 @@ const Login = ({isLoggedIn, findUser}) => {
     return <Redirect to="/"/>
 
   return (
-    <div className="login-wrapper">
-      <form onSubmit={e => {
-        e.preventDefault()
-        findUser(login, password)
-      }}>
+    <form
+      className="form"
+      onSubmit={e => {
+      e.preventDefault()
+      findUser(login, password)
+    }}>
+      <label>
+        *Login
         <input
           type="text"
+          name="login"
           onChange={e => setLogin(e.target.value)} />
+      </label>
+      <label>
+        *Password
         <input
           type="password"
+          name="password"
           onChange={e => setPassword(e.target.value)} />
-        <button>Login</button>
-      </form>
-    </div>
+      </label>
+      <button>Login</button>
+    </form>
   )
 }
 

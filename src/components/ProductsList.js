@@ -19,6 +19,7 @@ const ProductsList = ({products, deleteProduct, isLoggedIn, getProductsIfNeeded,
           <React.Fragment>
             <Link to="/add" className="header-link">New</Link>
             <a
+              href="/"
               className="header-link"
               onClick={e => {
                 e.preventDefault()
@@ -35,36 +36,41 @@ const ProductsList = ({products, deleteProduct, isLoggedIn, getProductsIfNeeded,
     <div className="product-list">
       {products.map(product =>
         <div className="product" key={product.id}>
-          <div className="product-image-wrapper">
-            <img src={product.prodData.image} alt={product.prodData.name}/>
-          </div>
-          <span className="product-name">{product.prodData.name}</span>
-          <span className="product-descr">{product.prodData.descr}</span>
-          <span className="product-price">${product.prodData.price}</span>
-
-          {product.prodData.discount > 0 && getDaysToDiscountExpire(product.prodData.discountEnds) > 0  &&
-            <React.Fragment>
-              <span className="product-price">
-                ${(product.prodData.price - (product.prodData.price / 100) * product.prodData.discount).toFixed(2)}
-              </span>
-              <span className="product-discount">{product.prodData.discount}%</span>
-              <span className="product-discount-ends">
-                days to discount expiry: {getDaysToDiscountExpire(product.prodData.discountEnds)}
-              </span>
-            </React.Fragment>
-          }
-
-          {isLoggedIn &&
-            <div className="product-controls">
-              <Link to={"/edit/" + product.id} className="product-control">&#9998;</Link>
-              <a href="/"
-              className="product-control"
-              onClick={e => {
-                e.preventDefault()
-                deleteProduct(product.id)
-              }}>&#10005;</a>
+          <div className="product-top">
+            <div className="product-image-wrapper">
+              <img src={product.prodData.image} alt={product.prodData.name}/>
             </div>
-          }
+            <span className="product-name">{product.prodData.name}</span>
+            <span className="product-descr">{product.prodData.descr}</span>
+
+            {product.prodData.discount > 0 && getDaysToDiscountExpire(product.prodData.discountEnds) > 0  ?
+              <React.Fragment>
+                <span className="product-price has-discount">${product.prodData.price}</span>
+                <span className="product-discount-price">
+                  ${(product.prodData.price - (product.prodData.price / 100) * product.prodData.discount).toFixed(2)}
+                </span>
+                <span className="product-discount">-{product.prodData.discount}%</span>
+                <span className="product-discount-ends">
+                  days to discount expiry: {getDaysToDiscountExpire(product.prodData.discountEnds)}
+                </span>
+              </React.Fragment> :
+              <span className="product-price">${product.prodData.price}</span>
+            }
+          </div>
+
+          <div className="product-bottom">
+            {isLoggedIn &&
+              <div className="product-controls">
+                <Link to={"/edit/" + product.id} className="product-control">&#9998;</Link>
+                <a href="/"
+                className="product-control"
+                onClick={e => {
+                  e.preventDefault()
+                  deleteProduct(product.id)
+                }}>&#10005;</a>
+              </div>
+            }
+          </div>
         </div>
       )}
     </div>

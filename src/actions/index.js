@@ -102,9 +102,6 @@ const storeProductData = (id, url, prodData, productIndex) => (dispatch, getStat
       else
         dispatch(addProduct(id, prodData))
   })
-  .catch(error => {
-      console.error("Error adding document: ", error);
-  });
 }
 
 // get uploaded image url from firebase store
@@ -112,8 +109,6 @@ const getImageUrl = (storageRef, id, prodData, productIndex) => dispatch => {
   storageRef.child(id.toString()).getDownloadURL().then(url => {
     console.log(url)
     dispatch(storeProductData(id, url, prodData, productIndex))
-  }).catch(error => {
-
   })
 }
 
@@ -159,9 +154,7 @@ const deleteImage = id => dispatch => {
   imagesRef.delete().then(() => {
       console.log('File deleted successfully')
       dispatch(removeProduct(id))
-  }).catch(error => {
-    // Uh-oh, an error occurred!
-  });
+  })
 }
 
 // Delete product
@@ -169,7 +162,5 @@ export const deleteProduct = id => dispatch => {
   db.collection("products").doc(id.toString()).delete().then(() => {
     console.log("Document successfully deleted!");
     dispatch(deleteImage(id))
-  }).catch(error => {
-      console.error("Error removing document: ", error);
-  });
+  })
 }
