@@ -5,14 +5,22 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
-import { getProductsIfNeeded } from '../actions'
+import { auth } from '../firebase'
+import { getProductsIfNeeded, changeLoginStatus } from '../actions'
 import Login from '../containers/Login'
 import ProductsList from '../containers/ProductsList'
 import AddProduct from '../containers/AddProduct'
 import EditProduct from '../containers/EditProduct'
 import './app.scss'
 
-const App = ({getProductsIfNeeded}) => {
+const App = ({getProductsIfNeeded, changeLoginStatus}) => {
+  auth.onAuthStateChanged(function(user) {
+    if (user) {
+      changeLoginStatus(true)
+    } else {
+      changeLoginStatus(false)
+    }
+  });
 
   useEffect(() => {
     getProductsIfNeeded()
@@ -40,7 +48,8 @@ const App = ({getProductsIfNeeded}) => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  getProductsIfNeeded: () => dispatch(getProductsIfNeeded())
+  getProductsIfNeeded: () => dispatch(getProductsIfNeeded()),
+  changeLoginStatus: isLoggedIn => dispatch(changeLoginStatus(isLoggedIn))
 })
 
 export default connect(

@@ -1,4 +1,4 @@
-import { db, storage } from '../firebase'
+import { db, storage, auth } from '../firebase'
 
 export const changeLoginStatus = isLoggedIn => ({
   type: 'CHANGE_LOGIN_STATUS',
@@ -32,24 +32,23 @@ export const changeLoadingStatus = isLoading => ({
   isLoading
 })
 
-
 //------------------------------------------------------------------------------
 // Login
 
 export const findUser = (login, password) => dispatch => {
-  db.collection("users").where("login", "==", login).get().then(querySnapshot => {
-    querySnapshot.forEach(doc => {
-        if (doc.data().password === password) {
-          localStorage.setItem('isLoggedIn', true)
-          dispatch(changeLoginStatus(true))
-        }
-    });
-  })
+  auth.signInWithEmailAndPassword(login, password).then(test => {
+    localStorage.setItem('isLoggedIn', true)
+  }).catch(error => {
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    console.log(errorCode, errorMessage);
+  });
 }
 
 export const logout = () => dispatch => {
-  localStorage.setItem('isLoggedIn', false)
-  dispatch(changeLoginStatus(false))
+  auth.signOut().then(function() {
+    localStorage.setItem('isLoggedIn', false)
+  })
 }
 
 //------------------------------------------------------------------------------
