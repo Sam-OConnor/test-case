@@ -56,6 +56,8 @@ export const findUser = (login, password) => dispatch => {
 export const logout = () => dispatch => {
   auth.signOut().then(() => {
     localStorage.setItem('isLoggedIn', false)
+  }).catch(error => {
+    dispatch(setError(error.code, error.message))
   })
 }
 
@@ -83,6 +85,8 @@ export const getProductsIfNeeded = () => (dispatch, getState) => {
       })
 
       dispatch(receiveProducts(prodData))
+    }).catch(error => {
+      dispatch(setError(error.code, error.message))
     })
   }
 }
@@ -106,6 +110,8 @@ const storeProductData = (id, url, prodData, productIndex) => (dispatch, getStat
       dispatch(editProduct(productIndex, prodData))
     else
       dispatch(addProduct(id, prodData))
+  }).catch(error => {
+    dispatch(setError(error.code, error.message))
   })
 }
 
@@ -113,6 +119,8 @@ const storeProductData = (id, url, prodData, productIndex) => (dispatch, getStat
 const getImageUrl = (storageRef, id, prodData, productIndex) => dispatch => {
   storageRef.child(id.toString()).getDownloadURL().then(url => {
     dispatch(storeProductData(id, url, prodData, productIndex))
+  }).catch(error => {
+    dispatch(setError(error.code, error.message))
   })
 }
 
@@ -138,6 +146,8 @@ export const sendProduct = (id, prodData, productIndex) => dispatch => {
       }
     ).then(snapshot => {
       dispatch(getImageUrl(storageRef, id, prodData, productIndex))
+    }).catch(error => {
+      dispatch(setError(error.code, error.message))
     })
   } else
       dispatch(storeProductData(id, prodData.image, prodData, productIndex))
@@ -155,6 +165,8 @@ const deleteImage = id => dispatch => {
   // Delete the file
   imagesRef.delete().then(() => {
       dispatch(removeProduct(id))
+  }).catch(error => {
+    dispatch(setError(error.code, error.message))
   })
 }
 
@@ -162,5 +174,7 @@ const deleteImage = id => dispatch => {
 export const deleteProduct = id => dispatch => {
   db.collection("products").doc(id.toString()).delete().then(() => {
     dispatch(deleteImage(id))
+  }).catch(error => {
+    dispatch(setError(error.code, error.message))
   })
 }

@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import ErrorMessage from '../containers/ErrorMessage'
 
 const getDaysToDiscountExpire = date => {
   const currentDate = new Date().setUTCHours(0,0,0,0).valueOf()
@@ -74,6 +75,7 @@ const ProductsList = ({products, deleteProduct, isLoggedIn, getProductsIfNeeded,
         </div>
       )}
     </div>
+    <ErrorMessage></ErrorMessage>
   </div>
 )
 

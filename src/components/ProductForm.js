@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import ProductFormValidation from './ProductFormValidation'
+import ErrorMessage from '../containers/ErrorMessage'
 
 const getMinDate = () => {
   const date = new Date()
@@ -188,6 +189,7 @@ const ProductForm = props => {
         Save
         <div className="preloader"></div>
       </button>
+      <ErrorMessage></ErrorMessage>
     </form>
   )
 }
