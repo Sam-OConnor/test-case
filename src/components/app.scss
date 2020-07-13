@@ -185,3 +185,30 @@ h2 {
  50% { transform: scale(1.5); }
  100% { transform: scale(1); }
 }
+
+.error-wrapper {
+  width: 400px;
+  height: 100px;
+  position: fixed;
+  bottom: -100px;
+  right: 10px;
+  background: #fb6a6a;
+  padding: 20px 10px;
+  box-sizing: border-box;
+  border-radius: 20px;
+  opacity: 0;
+  transition: all .3s cubic-bezier(.49,2,.39,.85);
+  &.has-error {
+    bottom: 10px;
+    opacity: 1;
+  }
+  .error-code, .error-message {
+    display: block;
+    color: #fff;
+    font-style: 20px;
+  }
+  .error-message {
+    font-size: 15px;
+    margin-top: 5px;
+  }
+}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Redirect } from 'react-router-dom'
+import ErrorMessage from '../containers/ErrorMessage'
 
 const Login = ({isLoggedIn, findUser}) => {
   const [login, setLogin] = useState('')
@@ -30,6 +31,7 @@ const Login = ({isLoggedIn, findUser}) => {
           onChange={e => setPassword(e.target.value)} />
       </label>
       <button>Login</button>
+      <ErrorMessage></ErrorMessage>
     </form>
   )
 }

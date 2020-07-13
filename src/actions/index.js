@@ -32,21 +32,29 @@ export const changeLoadingStatus = isLoading => ({
   isLoading
 })
 
+export const setError = (errorCode, errorMessage) => ({
+  type: 'SET_ERROR',
+  errorCode: errorCode,
+  errorMessage: errorMessage
+})
+
+export const removeError = () => ({
+  type: 'REMOVE_ERROR'
+})
+
 //------------------------------------------------------------------------------
 // Login
 
 export const findUser = (login, password) => dispatch => {
-  auth.signInWithEmailAndPassword(login, password).then(test => {
+  auth.signInWithEmailAndPassword(login, password).then(() => {
     localStorage.setItem('isLoggedIn', true)
   }).catch(error => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    console.log(errorCode, errorMessage);
-  });
+    dispatch(setError(error.code, error.message))
+  })
 }
 
 export const logout = () => dispatch => {
-  auth.signOut().then(function() {
+  auth.signOut().then(() => {
     localStorage.setItem('isLoggedIn', false)
   })
 }
